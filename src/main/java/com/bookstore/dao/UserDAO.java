@@ -28,7 +28,7 @@ public class UserDAO extends JpaDAO<Users> implements GenericDAO<Users> {
     public Users findByEmail(String email) {
         List<Users> listUsers = super.findWithNamedQuery("Users.findByEmail", "email", email);
         
-        if (listUsers != null && listUsers.size() > 0) {
+        if (listUsers != null && listUsers.size() > 0) {	//listUsers.size() ==1 만약 이렇게 하면 중복 된거 없이 하나만 존재하는 거로 이해
             return listUsers.get(0); // 이메일 주소에 따른 사용자를 찾습니다.
         }
         

@@ -4,6 +4,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <!-- 콘텐츠 문자 집합을 UTF-8로 설정합니다. -->
     <title>Evergreen Bookstore Administration</title> <!-- 페이지 제목을 설정합니다. -->
+	<link rel="stylesheet" href="../css/style.css" >
+    
 </head>
 <body>
 

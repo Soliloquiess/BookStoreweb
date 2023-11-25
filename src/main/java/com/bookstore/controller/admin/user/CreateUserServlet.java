@@ -19,5 +19,6 @@ public class CreateUserServlet extends HttpServlet {
         
         UserServices userServices = new UserServices(request, response); // UserServices 인스턴스를 생성하여 request 및 response를 전달합니다.
         userServices.createUser(); // 사용자 생성 메서드를 호출합니다.
+        //userServices.listUser("new user success");
     }
 }
