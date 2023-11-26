@@ -4,11 +4,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<title>Manage Categories - Evergreen Bookstore Administration</title>
-	<link rel="stylesheet" href="../css/style.css" >
-	<script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
-	<script type="text/javascript" src="../js/jquery.validate.min.js"></script>	
+	    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>Manage Categories - Evergreen Bookstore Administration</title>
+    <link rel="stylesheet" href="../css/style.css" > <!-- 외부 스타일시트 파일 연결 -->
+    <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script> <!-- jQuery 라이브러리 연결 -->
+    <script type="text/javascript" src="../js/jquery.validate.min.js"></script> <!-- jQuery 유효성 검사 라이브러리 연결 -->  
 </head>
 <body>
 	<jsp:directive.include file="header.jsp" />
@@ -47,19 +47,23 @@
 	</div>
 	
 	
-	<jsp:directive.include file="footer.jsp" />
+<%-- 	<jsp:directive.include file="footer.jsp" /> --%>
 	
-	<script>
-		$(document).ready(function() {
-			$(".deleteLink").each(function() {
-				$(this).on("click", function() {
-					categoryId = $(this).attr("id");
-					if (confirm('Are you sure you want to delete the category with ID ' +  categoryId + '?')) {
-						window.location = 'delete_category?id=' + categoryId;
-					}					
-				});
-			});
-		});	
-	</script>
+	<%@ include file="footer.jsp" %> <!-- footer.jsp 파일 include -->
+    
+    <!-- JavaScript로 삭제 링크 동작 -->
+    <script>
+        $(document).ready(function() {
+            $(".deleteLink").each(function() {
+                $(this).on("click", function() {
+                    categoryId = $(this).attr("id"); // 선택된 카테고리 ID 가져오기
+                    // 삭제 확인 메시지 표시 후 확인 시 해당 ID의 카테고리 삭제 요청
+                    if (confirm('Are you sure you want to delete the category with ID ' +  categoryId + '?')) {
+                        window.location = 'delete_category?id=' + categoryId; // 카테고리 삭제 URL로 이동
+                    }                   
+                });
+            });
+        });    
+    </script>
 </body>
 </html>

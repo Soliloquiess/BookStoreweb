@@ -47,14 +47,26 @@
 	</div>
 </nav>
 
+<!-- 비어 있는 한 줄을 만들기 위한 div 요소 -->
 <div>&nbsp;</div>
+
+<!-- 요소를 가운데 정렬하기 위한 Bootstrap 그리드 시스템 div -->
 <div class="row justify-content-center">
-	<c:forEach var="category" items="${listCategory}" varStatus="status">
-		<a href="view_category?id=${category.categoryId}">
-			<font size="+1"><b><c:out value="${category.name}" /></b></font>
-		</a>
-		<c:if test="${not status.last}">
-		&nbsp; | &nbsp;
-		</c:if>
-	</c:forEach>
+
+    <!-- 카테고리 목록 반복 -->
+    <c:forEach var="category" items="${listCategory}" varStatus="status">
+        
+        <!-- 각 카테고리에 대한 링크 -->
+        <a href="view_category?id=${category.categoryId}">
+            
+            <!-- 카테고리 이름을 크고 굵게 표시 -->
+            <font size="+1"><b><c:out value="${category.name}" /></b></font>
+        </a>
+        
+        <!-- 마지막 카테고리가 아닌 경우 구분자 출력 -->
+        <c:if test="${not status.last}">
+            &nbsp; | &nbsp;
+        </c:if>
+    </c:forEach>
 </div>
+
