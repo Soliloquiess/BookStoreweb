@@ -54,12 +54,19 @@
             $(".deleteLink").each(function() {
                 $(this).on("click", function() {
                     userId = $(this).attr("id"); // 삭제할 사용자 ID 가져오기
+                   /*  userId = 1; */
                     if (confirm('ID가 ' + userId + '인 사용자를 삭제하시겠습니까?')) {
                         window.location = 'delete_user?id=' + userId; // 확인 시, delete_user 서블릿으로 이동
                     }                   
                 });
             });
         });
+        
+/*         function confirmDelete(userId){
+        	if(confirm('are you sure you want to delete the user with id '+ userId + '?')){
+        		window.location = 'delete_user?id='+userId;
+        	}
+        } */
     </script>
 </body>
 </html>

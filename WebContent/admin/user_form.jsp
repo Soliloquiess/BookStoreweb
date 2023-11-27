@@ -26,6 +26,9 @@
     <div align="center">
         <c:if test="${user != null}"> <!-- 'user'가 null이 아니면 조건을 실행합니다. -->
             <form action="update_user" method="post" style="max-width: 400px; margin: 0 auto;"> <!-- 'update_user'로 양식을 제출하는 form을 생성합니다. -->
+<!--             <form action="update_user" method="post" onsubmit="return validateFormInput() "> 'update_user'로 양식을 제출하는 form을 생성합니다. -->
+<!--             <form action="update_user" method="post" id="email "> 'onsubmit 지우고 id추가-->
+
             <input type="hidden" name="userId" value="${user.userId}"> <!-- 'userId' 숨은 입력 필드를 생성하고 값으로 '${user.userId}'를 사용합니다. -->
         </c:if>
         <c:if test="${user == null}"> <!-- 'user'가 null이면 조건을 실행합니다. -->
@@ -55,6 +58,7 @@
             <tr>
                 <td colspan="2" align="center">
                     <button type="submit">Save</button>&nbsp;&nbsp;&nbsp; <!-- 저장을 나타내는 버튼을 생성합니다. -->
+                   <!--  <button id = "buttonCancel">Cancel</button> 취소를 나타내는 버튼을 생성하고 이전 페이지로 돌아가는 JavaScript를 연결합니다. -->
                     <button type="button" onclick="history.go(-1);">Cancel</button> <!-- 취소를 나타내는 버튼을 생성하고 이전 페이지로 돌아가는 JavaScript를 연결합니다. -->
                 </td>
             </tr>				
@@ -64,5 +68,63 @@
 
     <%-- Include the footer --%>
     <jsp:directive.include file="footer.jsp" /> <!-- footer.jsp 파일을 include하여 삽입합니다. -->
+
+
+<!-- 제이쿼리 주면 아래 만든 validateForm없이 onsubmit 도 없이 태그에 id로 주면 된다 -->
+<!-- <script>
+	$(document).ready(function(){
+		$("#userForm").validate({
+			rules:{
+				email:{
+					required: true,
+					email:true
+				}
+				fullname:"required",
+				password:"required",
+			},
+			messages:{
+				email:"pls enter email",
+				fullname:"pls enter fullname",
+				password:"pls enter password",
+			}
+		})
+	}) 
+</script>-->
+
+<!-- 
+
+<script type = "text/javascript">
+	function validateFormInput(){
+		var fieldEmail = document.getElementById("email");
+		var fieldFullname = document.getElementById("fullname");
+		var fieldPassword = document.getElementById("password");
+	
+		if(filedEmail.value.length == 0){
+			alert("email is required");
+			fieldEmail.focus();
+			return false;
+		}
+		if(fieldFullname.value.length == 0){
+			alert("fullname is required");
+			fieldFullname.focus();
+			return false;
+		}
+		if(fieldPassword.value.length == 0){
+			alert("password is required");
+			fieldPassword.focus();
+			return false;
+		}
+		return true;
+	} 
+		})
+</script>-->
+	
+<script type = "text/javascript">
+	$("#cancelButton").click(function(){
+		history.go(-1);
+	})
+</script>
+
 </body>
 </html>
+
