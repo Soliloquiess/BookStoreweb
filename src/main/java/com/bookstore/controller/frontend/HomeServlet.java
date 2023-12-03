@@ -40,9 +40,20 @@ public class HomeServlet extends HttpServlet {
 //		request.setAttribute("listNewBooks", listNewBooks);
 //		request.setAttribute("listBestSellingBooks", listBestSellingBooks);
 //		request.setAttribute("listFavoredBooks", listFavoredBooks);
+		BookDAO bookDAO = new BookDAO(); // BookDAO 객체 생성
 		CategoryDAO categoryDAO = new CategoryDAO();
 		List<Category> listCategory = categoryDAO.listAll();
+		
+
+		// 새로운 책, 베스트셀러, 가장 인기 있는 책 목록을 가져옴
+		List<Book> listNewBooks = bookDAO.listNewBooks();
+		
+		
+		
 		request.setAttribute("listCategory", listCategory);
+		request.setAttribute("listNewBooks", listNewBooks);
+		
+		
 		//이 경우 category 헤더부분에 추가(#52)
 		
 		String homepage = "frontend/index.jsp"; // 홈페이지 JSP 파일의 경로

@@ -7,7 +7,11 @@
 <head>
     <meta charset="UTF-8">  <!-- 콘텐츠 문자 집합을 UTF-8로 설정합니다. -->
     <title>Evergreen Bookstore Administration</title>   <!--  페이지 제목을 설정합니다. -->
-    <link rel="stylesheet" href="../css/style.css">   <!--  외부 CSS 파일을 연결합니다. -->
+    <!-- 첫 번째 줄: 부모 디렉토리에서 상대 경로를 사용하여 'style.css' 파일을 불러옵니다. -->
+	<link rel="stylesheet" href="../css/style.css">
+	<!-- 두 번째 줄: 현재 디렉토리에서 상대 경로를 사용하여 'style.css' 파일을 불러옵니다. 근데 이거 하면 css 안먹음-->
+<!-- 	<link rel="stylesheet" href="css/style.css"> -->
+    
 </head>
 <body>
     <jsp:directive.include file="header.jsp" />   <!--  header.jsp 파일을 include하여 삽입합니다. -->

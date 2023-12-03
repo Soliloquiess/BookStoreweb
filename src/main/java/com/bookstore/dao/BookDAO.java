@@ -11,80 +11,92 @@ public class BookDAO extends JpaDAO<Book> implements GenericDAO<Book> {
 	public BookDAO() {
 	}
 
-	@Override
-	public Book create(Book book) {
-		book.setLastUpdateTime(new Date());
-		return super.create(book);
-	}
+    @Override
+    public Book create(Book book) {
+        // 새 책을 추가할 때 마지막 업데이트 시간을 설정하여 추가하는 메서드
+        book.setLastUpdateTime(new Date());
+        return super.create(book);
+    }
 
-	@Override
-	public Book update(Book book) {
-		book.setLastUpdateTime(new Date());
-		return super.update(book);
-	}
+    @Override
+    public Book update(Book book) {
+        // 책 정보를 업데이트할 때 마지막 업데이트 시간을 설정하여 업데이트하는 메서드
+        book.setLastUpdateTime(new Date());
+        return super.update(book);
+    }
 
-	@Override
-	public Book get(Object bookId) {
-		return super.find(Book.class, bookId);
-	}
+    @Override
+    public Book get(Object bookId) {
+        // 주어진 bookId에 해당하는 Book 객체를 반환하는 메서드
+        return super.find(Book.class, bookId);
+    }
 
-	@Override
-	public void delete(Object bookId) {
-		super.delete(Book.class, bookId);
-	}
+    @Override
+    public void delete(Object bookId) {
+        // 주어진 bookId에 해당하는 Book 객체를 삭제하는 메서드
+        super.delete(Book.class, bookId);
+    }
 
-	@Override
-	public List<Book> listAll() {		
-		return super.findWithNamedQuery("Book.findAll");
-	}
+    @Override
+    public List<Book> listAll() {
+        // 모든 Book 객체 리스트를 반환하는 메서드
+        return super.findWithNamedQuery("Book.findAll");
+    }
 
-	public Book findByTitle(String title) {
-		List<Book> result = super.findWithNamedQuery("Book.findByTitle", "title", title);
-		
-		if (!result.isEmpty()) {
-			return result.get(0);
-		}
-		
-		return null;
-	}
-	
-	public List<Book> listByCategory(int categoryId) {
-		return super.findWithNamedQuery("Book.findByCategory", "catId", categoryId);
-	}
-	
-	public List<Book> search(String keyword) {
-		return super.findWithNamedQuery("Book.search", "keyword", keyword);
-	}
-	
-	public List<Book> listNewBooks() {		
-		return super.findWithNamedQuery("Book.listNew", 0, 4);
-	}
-	
-	@Override
-	public long count() {
-		return super.countWithNamedQuery("Book.countAll");
-	}
-	
-	public long countByCategory(int categoryId) {
-		return super.countWithNamedQuery("Book.countByCategory", "catId", categoryId);
-	}
+    public Book findByTitle(String title) {
+        // 주어진 제목에 해당하는 Book 객체를 반환하는 메서드
+        List<Book> result = super.findWithNamedQuery("Book.findByTitle", "title", title);
+        if (!result.isEmpty()) {
+            return result.get(0);
+        }
+        return null;
+    }
 
-	public List<Book> listBestSellingBooks() {
-		return super.findWithNamedQuery("OrderDetail.bestSelling", 0, 4);
-	}	
+    public List<Book> listByCategory(int categoryId) {
+        // 주어진 categoryId에 해당하는 Book 객체 리스트를 반환하는 메서드
+        return super.findWithNamedQuery("Book.findByCategory", "catId", categoryId);
+    }
 	
-	public List<Book> listMostFavoredBooks() {
-		List<Book> mostFavoredBooks = new ArrayList<>();
-		
-		List<Object[]> result = super.findWithNamedQueryObjects("Review.mostFavoredBooks", 0, 4);
-		
-		if (!result.isEmpty()) {
-			for (Object[] elements : result) {
-				Book book = (Book) elements[0];
-				mostFavoredBooks.add(book);
-			}
-		} 
-		
-		return mostFavoredBooks;
-	}
+    public List<Book> search(String keyword) {
+        // 주어진 키워드로 Book을 검색하는 메서드
+        return super.findWithNamedQuery("Book.search", "keyword", keyword);
+        //쿼리의 매개변수명은 'keyword'이고, 값은 키워드 문자열, 'Book도메인 모델클래스'
+    }
+
+    public List<Book> listNewBooks() {
+        // 새로운 Book 리스트를 반환하는 메서드
+        return super.findWithNamedQuery("Book.listNew", 0, 4);
+    }
+
+    @Override
+    public long count() {
+        // Book 엔티티의 전체 개수를 반환하는 메서드
+        return super.countWithNamedQuery("Book.countAll");
+    }
+
+    public long countByCategory(int categoryId) {
+        // 특정 카테고리에 속하는 Book 엔티티의 개수를 반환하는 메서드
+        return super.countWithNamedQuery("Book.countByCategory", "catId", categoryId);
+    }
+
+    public List<Book> listBestSellingBooks() {
+        // 가장 많이 팔린 Book 리스트를 반환하는 메서드
+        return super.findWithNamedQuery("OrderDetail.bestSelling", 0, 4);
+    }
+
+    public List<Book> listMostFavoredBooks() {
+        // 가장 많은 좋아요를 받은 Book 리스트를 반환하는 메서드
+        List<Book> mostFavoredBooks = new ArrayList<>();
+        
+        List<Object[]> result = super.findWithNamedQueryObjects("Review.mostFavoredBooks", 0, 4);
+        
+        if (!result.isEmpty()) {
+            for (Object[] elements : result) {
+                Book book = (Book) elements[0];
+                mostFavoredBooks.add(book);
+            }
+        } 
+        
+        return mostFavoredBooks;
+    }
 }

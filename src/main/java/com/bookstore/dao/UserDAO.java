@@ -12,6 +12,13 @@ public class UserDAO extends JpaDAO<Users> implements GenericDAO<Users> {
     }
 
     public Users create(Users user) {
+    	// 사용자의 비밀번호를 MD5 해시로 암호화합니다.
+    	// HashGenerator 클래스의 generateMD5 메서드를 사용하여 암호화를 수행합니다.
+    	// 이렇게 함으로써 사용자의 비밀번호를 해싱하여 저장할 수 있습니다.
+    	String encryptedPassword = HashGenerator.generateMD5(user.getPassword());
+    	// 암호화된 비밀번호를 사용자 객체에 설정합니다.
+    	user.setPassword(encryptedPassword);
+
         return super.create(user); // 사용자를 생성하고 데이터베이스에 유저 정보를 저장합니다.
     }
     

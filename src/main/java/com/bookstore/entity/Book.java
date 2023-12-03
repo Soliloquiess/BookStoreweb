@@ -50,6 +50,7 @@ import javax.swing.event.TreeSelectionEvent;
     @NamedQuery(name = "Book.search", query = "SELECT b FROM Book b WHERE b.title LIKE '%' || :keyword || '%'"
             + " OR b.author LIKE '%' || :keyword || '%'"
             + " OR b.description LIKE '%' || :keyword || '%'")
+    //참고로 위 쿼리에서 LIKE 했을때 % 없으면 완전히 동일해야 한다. sql문 생각하면 됨
 })
 public class Book implements java.io.Serializable {
 
@@ -67,14 +68,17 @@ public class Book implements java.io.Serializable {
     private Set<Review> reviews = new HashSet<Review>(0);
     private Set<OrderDetail> orderDetails = new HashSet<OrderDetail>(0);
 
+	// 기본 생성자
     public Book() {
     }
-    
+
+	// ID를 사용하는 생성자
     public Book(Integer bookId) {
         super();
         this.bookId = bookId;
     }
 
+	// Book 엔티티를 초기화하는 생성자
     public Book(Category category, String title, String author, String description, String isbn, byte[] image,
             float price, Date publishDate, Date lastUpdateTime) {
         this.category = category;
@@ -88,6 +92,7 @@ public class Book implements java.io.Serializable {
         this.lastUpdateTime = lastUpdateTime;
     }
 
+	// 모든 필드를 가진 생성자
     public Book(Category category, String title, String author, String description, String isbn, byte[] image,
             float price, Date publishDate, Date lastUpdateTime, Set<Review> reviews, Set<OrderDetail> orderDetails) {
         this.category = category;
@@ -103,9 +108,9 @@ public class Book implements java.io.Serializable {
         this.orderDetails = orderDetails;
     }
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "book_id", unique = true, nullable = false)
+    @Id // 해당 필드를 엔티티의 기본 키로 지정
+    @GeneratedValue(strategy = IDENTITY) // 자동 생성되는 기본 키 설정
+    @Column(name = "book_id", unique = true, nullable = false) // 데이터베이스 칼럼과 매핑 설정
     // bookId의 Getter와 Setter
     public Integer getBookId() {
         return this.bookId;
@@ -115,8 +120,8 @@ public class Book implements java.io.Serializable {
         this.bookId = bookId;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)// 다대일(N:1) 관계 설정
+    @JoinColumn(name = "category_id", nullable = false)// 외래 키에 대한 매핑
     // category의 Getter와 Setter
     public Category getCategory() {
         return this.category;
@@ -126,7 +131,7 @@ public class Book implements java.io.Serializable {
         this.category = category;
     }
 
-    @Column(name = "title", unique = true, nullable = false, length = 128)
+    @Column(name = "title", unique = true, nullable = false, length = 128)// 데이터베이스 칼럼과 매핑 설정
     // title의 Getter와 Setter
     public String getTitle() {
         return this.title;
@@ -136,7 +141,7 @@ public class Book implements java.io.Serializable {
         this.title = title;
     }
 
-    @Column(name = "author", nullable = false, length = 64)
+    @Column(name = "author", nullable = false, length = 64)// 데이터베이스 칼럼과 매핑 설정
     // author의 Getter와 Setter
     public String getAuthor() {
         return this.author;
@@ -146,7 +151,7 @@ public class Book implements java.io.Serializable {
         this.author = author;
     }
 
-    @Column(name = "description", nullable = false, length = 16777215)
+    @Column(name = "description", nullable = false, length = 16777215)// 데이터베이스 칼럼과 매핑 설정
     // description의 Getter와 Setter
     public String getDescription() {
         return this.description;
@@ -156,7 +161,7 @@ public class Book implements java.io.Serializable {
         this.description = description;
     }
 
-    @Column(name = "isbn", nullable = false, length = 15)
+    @Column(name = "isbn", nullable = false, length = 15) // 데이터베이스 칼럼과 매핑 설정
     // isbn의 Getter와 Setter
     public String getIsbn() {
         return this.isbn;
@@ -166,7 +171,7 @@ public class Book implements java.io.Serializable {
         this.isbn = isbn;
     }
 
-    @Column(name = "image", nullable = false)
+    @Column(name = "image", nullable = false) // 데이터베이스 칼럼과 매핑 설정
     // image의 Getter와 Setter
     public byte[] getImage() {
         return this.image;
@@ -176,7 +181,7 @@ public class Book implements java.io.Serializable {
         this.image = image;
     }
 
-    @Column(name = "price", nullable = false, precision = 12, scale = 0)
+    @Column(name = "price", nullable = false, precision = 12, scale = 0) // 데이터베이스 칼럼과 매핑 설정
     // price의 Getter와 Setter
     public float getPrice() {
         return this.price;
@@ -187,7 +192,7 @@ public class Book implements java.io.Serializable {
     }
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "publish_date", nullable = false, length = 10)
+    @Column(name = "publish_date", nullable = false, length = 10) // 데이터베이스 칼럼과 매핑 설정
     // publishDate의 Getter와 Setter
     public Date getPublishDate() {
         return this.publishDate;
@@ -198,7 +203,7 @@ public class Book implements java.io.Serializable {
     }
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "last_update_time", nullable = false, length = 19)
+    @Column(name = "last_update_time", nullable = false, length = 19)// 데이터베이스 칼럼과 매핑 설정
     // lastUpdateTime의 Getter와 Setter
     public Date getLastUpdateTime() {
         return this.lastUpdateTime;
@@ -212,6 +217,8 @@ public class Book implements java.io.Serializable {
     // reviews의 Getter와 Setter
     public Set<Review> getReviews() {
         // 리뷰를 내림차순으로 정렬
+        // 리뷰를 시간 순서대로 정렬하여 반환하는 메서드
+
         TreeSet<Review> sortedReviews = new TreeSet<>(new Comparator<Review>() {
             @Override
             public int compare(Review review1, Review review2) {
@@ -237,9 +244,12 @@ public class Book implements java.io.Serializable {
         this.orderDetails = orderDetails;
     }
     
-    @Transient
+    @Transient //한마디로 일시적으로 필드를 만듬
+	//@Transient는 자바 표준 표시 어노테이션(annotation) 중 하나입니다. 이 어노테이션은 JPA(Java Persistence API)에서 사용되며, 데이터베이스와의 상호 작용 중 특정 필드를 영속화(Persistence)하지 않도록 지시합니다.
+	//JPA는 Java 객체와 관계형 데이터베이스 간의 매핑을 단순화하고 개발자가 객체를 데이터베이스에 저장하고 조회할 수 있도록 지원하는 기술입니다. 이때, Java 객체의 필드 중 일부를 데이터베이스에 매핑하지 않고 무시하고 싶을 때 @Transient 어노테이션을 사용합니다.
+	//예를 들어, 특정 필드가 데이터베이스 테이블에 저장되지 않아야 하거나, 영속화되지 않아야 할 때 해당 필드에 @Transient 어노테이션을 붙여 JPA에게 그 필드를 무시하도록 지시할 수 있습니다.
     // base64Image의 Getter
-    public String getBase64Image() {
+    public String getBase64Image() {        // 이미지를 Base64로 변환하여 반환하는 메서드
         this.base64Image = Base64.getEncoder().encodeToString(this.image);
         return this.base64Image;
     }
@@ -252,6 +262,7 @@ public class Book implements java.io.Serializable {
 
     @Transient
     // 평균 평점을 반환하는 메서드
+    // 리뷰들의 평균 평점을 계산하는 메서드
     public float getAverageRating() {
         float averageRating = 0.0f;
         float sum = 0.0f;

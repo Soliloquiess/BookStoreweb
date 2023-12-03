@@ -8,6 +8,7 @@ import javax.servlet.ServletException; // ServletException을 import합니다.
 import javax.servlet.http.HttpServletRequest; // HttpServletRequest를 import합니다.
 import javax.servlet.http.HttpServletResponse; // HttpServletResponse를 import합니다.
 
+import com.bookstore.dao.HashGenerator;
 import com.bookstore.dao.UserDAO; // UserDAO를 import합니다.
 import com.bookstore.entity.Users; // Users 엔터티를 import합니다.
 
@@ -90,6 +91,12 @@ public class UserServices {
 			String errorMessage = "Could not find user with ID " + userId;
 			request.setAttribute("message", errorMessage);
 		} else {
+			// 패스워드를 null로 설정하여 기본적으로 패스워드를 비워두도록 합니다.
+			// 비워둔 경우, 사용자의 패스워드는 업데이트되지 않습니다.
+			// 이는 암호화된 패스워드 기능과 함께 작동하기 위한 것입니다.
+			// 사용자의 패스워드를 빈 값으로 설정하여 기존 암호화된 패스워드를 유지합니다.
+			user.setPassword(null);
+
 			request.setAttribute("user", user);			
 		}
 		
@@ -129,11 +136,32 @@ public class UserServices {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("message.jsp");
             requestDispatcher.forward(request, response);
         } else {
-            Users user = new Users(userId, email, fullName, password); // 새로운 사용자 객체를 생성합니다.
-            userDAO.update(user); // 사용자 정보를 업데이트합니다.
+        	
+        	// 사용자의 이메일을 업데이트합니다.
+        	userById.setEmail(email);
 
-            String message = "User has been updated successfully"; // 성공 메시지를 설정합니다.
-            listUser(message); // 사용자 목록 페이지로 이동하며 메시지를 전달합니다.
+        	// 사용자의 전체 이름을 업데이트합니다.
+        	userById.setFullName(fullName);
+
+        	// 만약 패스워드가 null이 아니고 비어있지 않다면, 새로운 패스워드로 업데이트합니다.
+        	if (password != null & !password.isEmpty()) {
+        	    // 입력된 패스워드를 MD5로 암호화하여 저장합니다.
+        	    String encryptedPassword = HashGenerator.generateMD5(password);
+        	    userById.setPassword(encryptedPassword);
+        	}
+
+        	// 사용자 정보를 데이터베이스에 업데이트합니다.
+        	userDAO.update(userById);
+
+        	// 사용자가 성공적으로 업데이트되었음을 알리는 메시지를 설정하고 사용자 목록을 다시 표시합니다.
+        	String message = "사용자가 성공적으로 업데이트되었습니다";
+        	listUser(message);
+
+//            Users user = new Users(userId, email, fullName, password); // 새로운 사용자 객체를 생성합니다.
+//            userDAO.update(user); // 사용자 정보를 업데이트합니다.
+//
+//            String message = "User has been updated successfully"; // 성공 메시지를 설정합니다.
+//            listUser(message); // 사용자 목록 페이지로 이동하며 메시지를 전달합니다.
         }
     }
 

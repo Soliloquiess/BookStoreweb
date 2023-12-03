@@ -37,16 +37,18 @@ public abstract class BaseServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-    	entityManagerFactory = Persistence.createEntityManagerFactory("BookStoreWebsite"); // 엔터티 매니저 생성
-        entityManager =entityManagerFactory.createEntityManager();
-
+        // 엔터티 매니저 팩토리 생성
+        entityManagerFactory = Persistence.createEntityManagerFactory("BookStoreWebsite");
+        // 엔터티 매니저 생성
+        entityManager = entityManagerFactory.createEntityManager();
     }
-
 
     @Override
     public void destroy() {
-    	entityManager.close();
-    	entityManagerFactory.close();
-    	
+        // 엔터티 매니저 닫기
+        entityManager.close();
+        // 엔터티 매니저 팩토리 닫기
+        entityManagerFactory.close();
     }
+
 }

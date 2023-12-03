@@ -123,7 +123,8 @@ public class Customer implements java.io.Serializable {
 	}	
 	
 
-	@Column(name = "address_line1", nullable = false, length = 128)
+	//@Column(name = "address_line1", nullable = false, length = 128)
+	@Column(name = "addressLine1", nullable = false, length = 128)
 	public String getAddressLine1() {
 		return this.addressLine1;
 	}
@@ -132,7 +133,8 @@ public class Customer implements java.io.Serializable {
 		this.addressLine1 = address1;
 	}
 
-	@Column(name = "address_line2", nullable = false, length = 128)
+	//@Column(name = "address_line2", nullable = false, length = 128)
+	@Column(name = "addressLine2", nullable = false, length = 128)
 	public String getAddressLine2() {
 		return this.addressLine2;
 	}
