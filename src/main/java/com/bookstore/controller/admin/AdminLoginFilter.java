@@ -78,7 +78,6 @@ public class AdminLoginFilter implements Filter {
             // 로그인 페이지로 리다이렉트
             RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
             dispatcher.forward(request, response);
-            System.out.println("test.");
         }
 
     }
