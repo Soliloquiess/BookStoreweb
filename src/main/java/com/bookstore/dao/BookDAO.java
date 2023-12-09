@@ -45,11 +45,17 @@ public class BookDAO extends JpaDAO<Book> implements GenericDAO<Book> {
 
     public Book findByTitle(String title) {
         // 주어진 제목에 해당하는 Book 객체를 반환하는 메서드
-        List<Book> result = super.findWithNamedQuery("Book.findByTitle", "title", title);
-        if (!result.isEmpty()) {
-            return result.get(0);
-        }
-        return null;
+    	// Book 클래스의 리스트를 반환하는데, 이 리스트는 제목에 따라 데이터베이스에서 책을 찾는 메서드입니다.
+    	List<Book> result = super.findWithNamedQuery("Book.findByTitle", "title", title);
+
+    	// 만약 결과 리스트가 비어있지 않다면,
+    	if (!result.isEmpty()) {
+    	    // 리스트의 첫 번째 요소(가장 처음으로 찾은 책)를 반환합니다.
+    	    return result.get(0);
+    	}
+
+    	// 결과 리스트가 비어있으면, 책을 찾지 못한 것이므로 null을 반환합니다.
+    	return null;
     }
 
     public List<Book> listByCategory(int categoryId) {

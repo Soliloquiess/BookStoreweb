@@ -15,11 +15,23 @@
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.format_sql" value="true" />
             
-            <property name="hibernate.c3p0.min_size" value="1" />
-            <property name="hibernate.c3p0.max_size" value="10" />
-            <property name="hibernate.c3p0.timeout" value="1200" />
-            <property name="hibernate.c3p0.max_statements" value="50" />
-            <property name="hibernate.c3p0.idle_test_period" value="3000" />
+<!-- c3p0는 Java 언어를 위한 JDBC 연결 풀 라이브러리 중 하나입니다. JDBC(Java Database Connectivity)는 Java 언어에서 데이터베이스에 접속하고 쿼리를 실행하는 데 사용되는 API입니다. c3p0는 이러한 JDBC 연결 관리를 보다 효율적으로 해주는 라이브러리로, 주로 데이터베이스 연결 풀링을 구현하는 데 사용됩니다. -->
+<!-- c3p0는 다양한 설정 옵션을 제공하여 연결 풀의 동작을 조정할 수 있습니다. 예를 들어, 최소 및 최대 연결 수, 연결 유효성 검사, 연결 타임아웃 등의 설정을 통해 풀링 동작을 커스터마이징할 수 있습니다. -->
+            <!-- 최소 연결 수를 1로 설정합니다. -->
+			<property name="hibernate.c3p0.min_size" value="1" />
+			
+			<!-- 최대 연결 수를 10으로 설정합니다. -->
+			<property name="hibernate.c3p0.max_size" value="10" />
+			
+			<!-- 연결이 유휴 상태로 유지될 수 있는 최대 시간(초)을 1200으로 설정합니다. -->
+			<property name="hibernate.c3p0.timeout" value="1200" />
+			
+			<!-- 각 연결에서 캐시될 수 있는 최대 PreparedStatement의 수를 50으로 설정합니다. -->
+			<property name="hibernate.c3p0.max_statements" value="50" />
+			
+			<!-- 연결이 유휴 상태인지 확인하는 주기(초)를 3000으로 설정합니다. -->
+			<property name="hibernate.c3p0.idle_test_period" value="3000" />
+
         </properties>
     </persistence-unit>
 </persistence>

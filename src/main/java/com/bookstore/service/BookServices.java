@@ -348,25 +348,38 @@ public class BookServices {
 //	이 경우 웹사이트는 방문자에게 친숙한 오류 메시지를 표시해야 합니다.
 
 	public void viewBookDetail() throws ServletException, IOException {
-		Integer bookId = Integer.parseInt(request.getParameter("id"));
-		Book book = bookDAO.get(bookId);
-		List<Category> listCategory = categoryDAO.listAll();
-		 
-		String destPage = "frontend/book_detail.jsp";
-		
-		if (book != null) {
-			request.setAttribute("listCategory", listCategory); // 요청 속성에 Book 객체 설정
-			request.setAttribute("book", book);
-			
-		} else {
-			destPage = "frontend/message.jsp";
-			String message = "Sorry, the book with ID " + bookId + " is not available.";
-			request.setAttribute("message", message);			
-		}
+	    // 요청 파라미터에서 책 ID를 가져와 Integer로 변환
+	    Integer bookId = Integer.parseInt(request.getParameter("id"));
+	    // bookDAO를 사용하여 해당 ID에 해당하는 Book 객체를 가져옴
+	    Book book = bookDAO.get(bookId);
+	    // 모든 카테고리를 가져오기 위해 categoryDAO를 사용하여 리스트를 가져옴
+	    List<Category> listCategory = categoryDAO.listAll();
+	     
+	    // JSP 페이지의 목적지 설정
+	    String destPage = "frontend/book_detail.jsp";
+	    
+	    // 만약 book 객체가 null이 아니라면
+	    if (book != null) {
+	        // 요청 속성에 카테고리 리스트를 설정
+	        request.setAttribute("listCategory", listCategory);
+	        // 요청 속성에 Book 객체를 설정
+	        request.setAttribute("book", book);
+	        
+	    } else { // 만약 book 객체가 null이면
+	        // 목적지 페이지를 에러 메시지를 보여줄 frontend/message.jsp로 변경
+	        destPage = "frontend/message.jsp";
+	        // 에러 메시지 작성
+	        String message = "Sorry, the book with ID " + bookId + " is not available.";
+	        // 요청 속성에 메시지를 설정
+	        request.setAttribute("message", message);            
+	    }
 
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher(destPage);
-		requestDispatcher.forward(request, response);
+	    // 요청을 특정 목적지로 전달하기 위해 RequestDispatcher를 가져옴
+	    RequestDispatcher requestDispatcher = request.getRequestDispatcher(destPage);
+	    // 요청과 응답을 특정 목적지로 전달함
+	    requestDispatcher.forward(request, response);
 	}
+
 	
 //	public void viewBookDetail() throws ServletException, IOException {
 //	    Integer bookId = Integer.parseInt(request.getParameter("id")); // 요청에서 bookId 가져오기

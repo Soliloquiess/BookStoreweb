@@ -21,6 +21,16 @@
     <!-- jQuery 및 기타 자바스크립트 파일 연결 -->
     <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="../js/jquery.richtext.min.js"></script>
+    <!-- 텍스트 편집기 불러옴 -->
+    
+<script>
+    // 입력 필드에서 마지막 공백을 제거하는 함수
+    function removeTrailingSpace() {
+        var titleField = document.getElementById("titleInput");
+        titleField.value = titleField.value.trim(); // 입력 필드의 값에서 마지막 공백 제거
+    }
+</script>
+
 </head>
 <body>
     <!-- header.jsp 파일 include -->
@@ -79,7 +89,7 @@
             <!-- 책 제목 입력 -->
             <tr>
                 <td align="right">Title:</td>
-                <td align="left"><input type="text" name="title" size="20" value="${book.title}" required /></td>
+    			<td align="left"><input type="text" name="title" id="titleInput" size="20" value="${book.title}" required onblur="removeTrailingSpace()" /></td>
             </tr>
             <!-- 저자 입력 -->
             <tr>
@@ -152,7 +162,8 @@
     // 페이지 로딩 후 실행되는 스크립트
     $(document).ready(function() {
         // 텍스트 에디터 초기화
-        $('#description').richText(); // ID가 'description'인 요소에 리치 텍스트 편집기를 초기화합니다.
+        $('#description').richText(); // ID가 'description'인 요소에 리치 텍스트 편집기를 초기화합니다.  
+        //richText로 텍스트 편집기 불러옴 description는 위 html의 id 맞춰줌( line 132)
         /* 
         richText()는 HTML 텍스트 편집기나 에디터를 활성화하고, 사용자가 리치 텍스트(Rich Text) 형식으로 텍스트를 편집하고 서식을 적용할 수 있도록 도와주는 JavaScript 라이브러리나 플러그인 중 하나입니다.
         일반적으로 richText() 함수는 WYSIWYG(What You See Is What You Get) 에디터를 구현하는 데 사용됩니다. 이를 사용하면 사용자가 텍스트를 입력하고 서식을 지정할 수 있는 기능을 가진 편집기를 웹 페이지에 쉽게 통합할 수 있습니다.
