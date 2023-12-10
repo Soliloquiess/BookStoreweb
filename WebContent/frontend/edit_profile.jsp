@@ -93,7 +93,7 @@
 				<input type="password" name="confirmPassword" class="form-control" maxlength="16" oninput="checkPasswordMatch(this)" />
 			</div>
 		</div>																			
-		<div class="row">&nbsp;</div>
+		<div class="row">&nbsp;</div> <!-- 즉, 줄바꿈을 일으키지 않으면서 공백을 넣고 싶을 때 &nbsp;를 사용합니다.-->
 		<div class="form-group row">
 			<div class="col text-center">
 				<button type="submit" class="btn btn-primary mr-3">Save</button>

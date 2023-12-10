@@ -44,8 +44,10 @@ public class UserDAO extends JpaDAO<Users> implements GenericDAO<Users> {
     
     public boolean checkLogin(String email, String password) {
         Map<String, Object> parameters = new HashMap<>(); // 로그인 확인을 위한 매개변수를 생성합니다.
+		String encryptedPassword = HashGenerator.generateMD5(password);
         parameters.put("email", email); // 이메일을 매개변수로 설정합니다.
         parameters.put("password", password); // 비밀번호를 매개변수로 설정합니다.
+        //parameters.put("password", encryptedPassword); // 비밀번호를 매개변수로 설정합니다.
         
         List<Users> listUsers = super.findWithNamedQuery("Users.checkLogin", parameters);
         
