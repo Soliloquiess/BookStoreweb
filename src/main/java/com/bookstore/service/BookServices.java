@@ -19,6 +19,7 @@ import com.bookstore.dao.CategoryDAO;
 import com.bookstore.entity.Book;
 import com.bookstore.entity.Category;
 
+import static com.bookstore.service.CommonUtility.*;
 public class BookServices {
 	private BookDAO bookDAO;
 	private CategoryDAO categoryDAO;
@@ -233,33 +234,72 @@ public class BookServices {
 //	이 경우 두 번째 관리자에게 의미 있는 오류 메시지가 표시됩니다.
 	
 	public void deleteBook() throws ServletException, IOException {
-	    // 요청에서 bookId 파라미터를 가져와 Integer로 변환하여 bookId 변수에 할당
-	    Integer bookId = Integer.parseInt(request.getParameter("id"));
-	    
-	    // BookDAO를 사용하여 해당 bookId에 해당하는 Book 객체 가져오기
-	    Book book = bookDAO.get(bookId);
-	    
-	    // 만약 book 객체가 null이라면 (해당 bookId에 해당하는 Book 객체를 찾을 수 없거나 이미 삭제된 경우)
-	    if (book == null) {
-	        // 사용자에게 보여줄 메시지 설정 (해당 bookId를 가진 책을 찾을 수 없다는 메시지)
-	        String message = "Could not find book with ID " + bookId + ", or it might have been deleted";
-	        
-	        // 요청 속성에 메시지 설정
-	        request.setAttribute("message", message);
-	        
-	        // message.jsp 페이지로 포워딩하여 메시지를 사용자에게 보여줌
-	        request.getRequestDispatcher("message.jsp").forward(request, response);
-	        
-	    } else { // 만약 book 객체가 null이 아니라면 (해당 bookId에 해당하는 Book 객체를 찾은 경우)
-	        // 책 삭제 성공 메시지 설정
-	        String message = "The book has been deleted successfully.";
-	        
-	        // 해당 bookId를 가진 책을 실제로 삭제함
-	        bookDAO.delete(bookId);
-	        
-	        // 삭제 성공 메시지와 함께 책 목록 페이지를 보여줌
-	        listBooks(message);
-	    }
+		//관리자는 리뷰가 있는 책을 삭제할 수 없습니다. 책과 관련된 리뷰 및 주문이 없는 경우에만 책을 삭제할 수 있습니다. 이 과제에서는 책을 삭제하기 전에 리뷰를 확인하는 코드를 작성합니다.
+//BookServices 클래스의 deleteBook() 메서드를 업데이트합니다.
+//Book 인스턴스로 즉시 초기화되는 컬렉션이기 때문에 Book 개체의 필드 리뷰에 간단히 액세스하세요. 그런 다음 컬렉션의 크기/비어 있음을 확인하십시오.
+
+		// 요청(request)에서 'id' 매개변수를 가져와서 Integer로 변환합니다.
+		Integer bookId = Integer.parseInt(request.getParameter("id"));
+
+		// DAO(Data Access Object)에서 bookId에 해당하는 'Book' 객체를 가져옵니다.
+		Book book =  bookDAO.get(bookId);
+
+		// 'book' 객체가 null인지 확인합니다.
+		if (book == null) {
+		    // 'book' 객체가 null인 경우, 해당 ID의 책을 찾을 수 없거나 이미 삭제된 상태일 수 있음을 나타내는 오류 메시지를 생성합니다.
+		    String message = "ID가 " + bookId + "인 책을 찾을 수 없거나 이미 삭제되었을 수 있습니다.";
+		    
+		    // 'showMessageBackend' 메서드를 호출하여 오류 메시지를 표시합니다.
+		    showMessageBackend(message, request, response);
+		} else {
+		    // 'book' 객체가 null이 아닌 경우
+
+		    // 책에 리뷰가 있는지 확인합니다.
+		    if (!book.getReviews().isEmpty()) {
+		        // 책에 리뷰가 있는 경우, 해당 책을 삭제할 수 없음을 알리는 오류 메시지를 생성합니다.
+		        String message = "ID가 " + bookId + "인 책은 리뷰가 있어 삭제할 수 없습니다.";
+		        
+		        // 'showMessageBackend' 메서드를 호출하여 오류 메시지를 표시합니다.
+		        showMessageBackend(message, request, response);
+		    } else {
+		        // 책에 리뷰가 없는 경우
+
+		        // 책을 삭제했다는 메시지를 생성합니다.
+		        String message = "책이 성공적으로 삭제되었습니다.";
+		        
+		        // 'bookId'에 해당하는 책을 DAO를 통해 삭제합니다.
+		        bookDAO.delete(bookId);            
+		        
+		        // 삭제 후 변경된 책 목록을 표시하기 위해 'listBooks' 메서드를 호출하여 메시지와 함께 책 목록을 표시합니다.
+		        listBooks(message);
+		    }
+		}
+		
+		//아래는 이전 버전. 더불어 commonUtility 안 쓰고 직접 포워딩 해서 보내는 버전
+		/*
+		 * // 요청에서 bookId 파라미터를 가져와 Integer로 변환하여 bookId 변수에 할당 Integer bookId =
+		 * Integer.parseInt(request.getParameter("id"));
+		 * 
+		 * // BookDAO를 사용하여 해당 bookId에 해당하는 Book 객체 가져오기 Book book =
+		 * bookDAO.get(bookId);
+		 * 
+		 * // 만약 book 객체가 null이라면 (해당 bookId에 해당하는 Book 객체를 찾을 수 없거나 이미 삭제된 경우) if (book
+		 * == null) { // 사용자에게 보여줄 메시지 설정 (해당 bookId를 가진 책을 찾을 수 없다는 메시지) String message
+		 * = "Could not find book with ID " + bookId +
+		 * ", or it might have been deleted";
+		 * 
+		 * // 요청 속성에 메시지 설정 request.setAttribute("message", message);
+		 * 
+		 * // message.jsp 페이지로 포워딩하여 메시지를 사용자에게 보여줌
+		 * request.getRequestDispatcher("message.jsp").forward(request, response);
+		 * 
+		 * } else { // 만약 book 객체가 null이 아니라면 (해당 bookId에 해당하는 Book 객체를 찾은 경우) // 책 삭제
+		 * 성공 메시지 설정 String message = "The book has been deleted successfully.";
+		 * 
+		 * // 해당 bookId를 가진 책을 실제로 삭제함 bookDAO.delete(bookId);
+		 * 
+		 * // 삭제 성공 메시지와 함께 책 목록 페이지를 보여줌 listBooks(message); }
+		 */
 	}
 
 	

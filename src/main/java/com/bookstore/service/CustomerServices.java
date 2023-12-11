@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import com.bookstore.dao.CustomerDAO;
 import com.bookstore.dao.HashGenerator;
+import com.bookstore.dao.ReviewDAO;
 import com.bookstore.entity.Customer;
 import static com.bookstore.service.CommonUtility.*;
 
@@ -132,15 +133,15 @@ public class CustomerServices {
 	    customer.setLastname(lastname);
 	    
 	    // 비밀번호가 null이 아니고 빈 문자열이 아닌 경우, 고객 객체의 비밀번호를 업데이트합니다.
-//		if (password != null & !password.isEmpty()) {
-//			String encryptedPassword = HashGenerator.generateMD5(password);
-//			customer.setPassword(encryptedPassword);				
-//		}
+		if (password != null & !password.isEmpty()) {
+			String encryptedPassword = HashGenerator.generateMD5(password);
+			customer.setPassword(encryptedPassword);				
+		}
 	    
 	    // 비밀번호가 null이 아니고 빈 문자열이 아닌 경우, 고객 객체의 비밀번호를 업데이트합니다.
-	    if (password != null && !password.equals("")) {
-	        customer.setPassword(password);
-	    }
+//	    if (password != null && !password.equals("")) {
+//	        customer.setPassword(password);
+//	    }
 	    
 	    // 고객 객체의 전화번호, 주소 및 국가 정보를 업데이트합니다.
 	    customer.setPhone(phone);
@@ -271,24 +272,59 @@ public class CustomerServices {
 	 * @throws IOException IO 예외
 	 */
 	public void deleteCustomer() throws ServletException, IOException {
-	    // 요청으로부터 고객 ID를 가져와서 해당 고객 정보를 DB에서 삭제합니다.
+		//ch35 ver
+//		웹사이트에 고객과 관련된 리뷰나 주문이 아직 남아 있는 경우 관리자는 고객을 삭제할 수 없습니다. 본 과제에서는 리뷰 부분만 확인하면 됩니다.
+//		따라서 고객 삭제 기능은 고객을 삭제하기 전에 이 확인을 수행해야 합니다. 고객이 게시한 리뷰가 있는 경우 오류 메시지를 표시합니다. 그렇지 않으면 고객이 삭제될 수 있습니다.
+//		중요 참고: Customer 클래스에 있는 getReviews() 메소드의 FetchType을 EAGER로 변경하지 마십시오. 게으른 상태로 유지하세요.	
+//		->FetchType이 EAGER인 경우 고객 목록 기능은 연결된 Review 개체와 함께 모든 Customer 개체를 로드하기 때문입니다. 이는 애플리케이션 성능에 영향을 미칩니다.
 		Integer customerId = Integer.parseInt(request.getParameter("id"));
-		Customer customer = customerDAO.get(customerId);
+	    // DAO(Data Access Object)에서 customerId에 해당하는 'Customer' 객체를 가져옵니다.
+	    Customer customer = customerDAO.get(customerId);
+	    
+	    if (customer != null) {
+	        // ReviewDAO 객체를 생성합니다.
+	        ReviewDAO reviewDAO = new ReviewDAO();
+	        // 해당 고객이 작성한 리뷰의 수를 가져옵니다.
+	        long reviewCount = reviewDAO.countByCustomer(customerId);
+	        
+	        if (reviewCount == 0) {
+	            // 리뷰가 없는 경우, 해당 customerId를 가진 고객을 삭제합니다.
+	            customerDAO.delete(customerId);            
+	            // 삭제가 성공했음을 나타내는 메시지를 생성합니다.
+	            String message = "고객이 성공적으로 삭제되었습니다.";
+	            // 변경된 고객 목록을 표시하기 위해 'listCustomers' 메서드를 호출하여 메시지와 함께 고객 목록을 표시합니다.
+	            listCustomers(message);
+	        } else {
+	            // 리뷰가 있는 경우, 삭제할 수 없음을 나타내는 오류 메시지를 생성합니다.
+	            String message = "ID가 " + customerId + "인 고객은 책에 리뷰를 남겨 삭제할 수 없습니다.";
+	            // 'showMessageBackend' 메서드를 호출하여 오류 메시지를 표시합니다.
+	            showMessageBackend(message, request, response);
+	        }
+	    } else {
+	        // 'customer' 객체가 null인 경우, 해당 ID의 고객을 찾을 수 없거나 이미 삭제된 상태일 수 있음을 나타내는 오류 메시지를 생성합니다.
+	        String message = "ID가 " + customerId + "인 고객을 찾을 수 없거나 다른 관리자에 의해 이미 삭제되었을 수 있습니다.";
+	        // 'showMessageBackend' 메서드를 호출하여 오류 메시지를 표시합니다.
+	        showMessageBackend(message, request, response);
+	    }
 		
-		if (customer != null) {
-			customerDAO.delete(customerId);
-			
-			String message = "The customer has been deleted successfully.";
-			listCustomers(message);			
-		} else {
-			String message = "Could not find customer with ID " + customerId + ", "
-					+ "or it has been deleted by another admin";
-			showMessageBackend(message, request, response);
-		}
-
-	    // 고객이 삭제되었음을 알리는 메시지를 설정하고 고객 목록을 표시하는 JSP 페이지로 포워딩합니다.
-	    String message = "The customer has been deleted successfully.";
-	    listCustomers(message);
+		
+		//아래는 이전 버전
+		/*
+		 * // 요청으로부터 고객 ID를 가져와서 해당 고객 정보를 DB에서 삭제합니다. Integer customerId =
+		 * Integer.parseInt(request.getParameter("id")); Customer customer =
+		 * customerDAO.get(customerId);
+		 * 
+		 * if (customer != null) { customerDAO.delete(customerId);
+		 * 
+		 * String message = "The customer has been deleted successfully.";
+		 * listCustomers(message); } else { String message =
+		 * "Could not find customer with ID " + customerId + ", " +
+		 * "or it has been deleted by another admin"; showMessageBackend(message,
+		 * request, response); }
+		 * 
+		 * // 고객이 삭제되었음을 알리는 메시지를 설정하고 고객 목록을 표시하는 JSP 페이지로 포워딩합니다. String message =
+		 * "The customer has been deleted successfully."; listCustomers(message);
+		 */
 	}
 
 
