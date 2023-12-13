@@ -213,26 +213,32 @@ public class Book implements java.io.Serializable {
         this.lastUpdateTime = lastUpdateTime;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "book")
-    // reviews의 Getter와 Setter
-    public Set<Review> getReviews() {
-        // 리뷰를 내림차순으로 정렬
-        // 리뷰를 시간 순서대로 정렬하여 반환하는 메서드
+	 // OneToMany 어노테이션을 사용하여 관계를 표시하고, FetchType을 EAGER로 설정하여 책(book)과 리뷰(Review)의 일대다 관계를 매핑합니다.
+	 // "book" 속성을 기준으로 매핑되는 엔티티에 대한 설정입니다.
+	
+	 @OneToMany(fetch = FetchType.EAGER, mappedBy = "book")
+	 public Set<Review> getReviews() {
+	     // 리뷰를 내림차순으로 정렬하는 메서드입니다.
+	
+	     // TreeSet을 사용하여 Comparator를 구현하여 리뷰(Review)를 내림차순으로 정렬합니다.
+	     TreeSet<Review> sortedReviews = new TreeSet<>(new Comparator<Review>() {
+	         @Override
+	         public int compare(Review review1, Review review2) {
+	             // Review 객체의 시간을 비교하여 내림차순으로 정렬합니다.
+	             return review2.getReviewTime().compareTo(review1.getReviewTime());
+	         }
+	     });
+	     
+	     // 정렬된 리뷰를 기존의 Set에 추가합니다.
+	     sortedReviews.addAll(reviews);
+	     return sortedReviews; // 정렬된 리뷰를 반환합니다.
+	 }
+	
+	 // 리뷰(Review)의 Set을 설정하는 메서드입니다.
+	 public void setReviews(Set<Review> reviews) {
+	     this.reviews = reviews; // 주어진 리뷰(Review) Set을 현재의 리뷰 속성에 설정합니다.
+	 }
 
-        TreeSet<Review> sortedReviews = new TreeSet<>(new Comparator<Review>() {
-            @Override
-            public int compare(Review review1, Review review2) {
-                return review2.getReviewTime().compareTo(review1.getReviewTime());
-            }
-        });
-        
-        sortedReviews.addAll(reviews);
-        return sortedReviews;
-    }
-
-    public void setReviews(Set<Review> reviews) {
-        this.reviews = reviews;
-    }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
     // orderDetails의 Getter와 Setter
@@ -245,6 +251,7 @@ public class Book implements java.io.Serializable {
     }
     
     @Transient //한마디로 일시적으로 필드를 만듬
+    //@Transient로 표시된 메서드는 Hibernate에 의해 구문 분석 되지 않음 
 	//@Transient는 자바 표준 표시 어노테이션(annotation) 중 하나입니다. 이 어노테이션은 JPA(Java Persistence API)에서 사용되며, 데이터베이스와의 상호 작용 중 특정 필드를 영속화(Persistence)하지 않도록 지시합니다.
 	//JPA는 Java 객체와 관계형 데이터베이스 간의 매핑을 단순화하고 개발자가 객체를 데이터베이스에 저장하고 조회할 수 있도록 지원하는 기술입니다. 이때, Java 객체의 필드 중 일부를 데이터베이스에 매핑하지 않고 무시하고 싶을 때 @Transient 어노테이션을 사용합니다.
 	//예를 들어, 특정 필드가 데이터베이스 테이블에 저장되지 않아야 하거나, 영속화되지 않아야 할 때 해당 필드에 @Transient 어노테이션을 붙여 JPA에게 그 필드를 무시하도록 지시할 수 있습니다.

@@ -22,7 +22,11 @@
 	    <div class="col-sm-8">
 	        <div>
 	            <jsp:directive.include file="book_rating.jsp" />&nbsp;&nbsp; <!-- 4. 'book_rating.jsp'를 포함하여 책의 평점을 표시합니다. -->
+	            <!-- &nbsp;&nbsp; 로 공백 추가 -->
 	            <a href="#reviews">${fn:length(book.reviews)} Reviews</a> <!-- 5. 리뷰 링크를 통해 책의 리뷰 수를 표시합니다. -->
+	            <!-- fn:length는 일반적으로 프로그래밍이나 쿼리 언어에서 사용되는 함수 중 하나입니다. 이 함수는 컬렉션(배열, 리스트, 문자열 등)의 요소 수 또는 길이를 반환합니다.
+
+예를 들어, 프로그래밍에서 배열의 요소 수를 계산하거나, 문자열의 길이를 파악하는 데 사용됩니다. 이 함수를 사용하면 컬렉션의 크기를 쉽게 알 수 있어서 데이터 처리나 제어 구조에서 유용하게 활용됩니다. -->
 	        </div>
 	        <div>${book.description}</div> <!-- 6. 책의 설명을 표시합니다. -->
 	    </div>
