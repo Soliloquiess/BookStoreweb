@@ -19,6 +19,8 @@ public class CustomerLoginFilter implements Filter {
 			"/view_profile", "/edit_profile", "/update_profile", "/write_review",
 			"/checkout", "/place_order", "/view_orders", "/show_order_detail"
 	};
+	
+//위 코드는 Java에서 사용되는 loginRequiredURLs라는 이름의 String 배열을 정의하는 부분입니다. 각 문자열은 사용자가 로그인해야 하는 URL 경로를 나타냅니다. 이 URL들은 사용자가 로그인한 상태에서만 접근할 수 있는 페이지들로 추정됩니다.
 
 	public CustomerLoginFilter() {
 	}
@@ -56,17 +58,29 @@ public class CustomerLoginFilter implements Filter {
 		// 로그인이 필요한 페이지에 접근하면서 로그인되어 있지 않은 경우 로그인 페이지로 리다이렉트
 		if (!loggedIn && isLoginRequired(requestURL)) {
 			String queryString = httpRequest.getQueryString();
+			// 현재 HTTP 요청의 쿼리 문자열을 가져오는 부분
+
 			String redirectURL = requestURL;
-			
+			// 요청된 URL을 저장할 변수를 현재 요청된 URL(requestURL)로 초기화
+
 			if (queryString != null) {
-				redirectURL = redirectURL.concat("?").concat(queryString);
+			    // 쿼리 문자열이 존재하는 경우에 실행
+			    redirectURL = redirectURL.concat("?").concat(queryString);
+			    // 요청된 URL 뒤에 쿼리 문자열을 붙여서 새로운 redirectURL을 만듦
 			}
-			
+
 			session.setAttribute("redirectURL", redirectURL);
-			
+			// 세션에 redirectURL 값을 저장하는 부분
+
 			String loginPage = "frontend/login.jsp";
+			// 로그인 페이지의 경로를 저장하는 부분
+
 			RequestDispatcher dispatcher = httpRequest.getRequestDispatcher(loginPage);
+			// 로그인 페이지로의 요청을 처리하기 위한 Dispatcher를 생성
+
 			dispatcher.forward(request, response);
+			// 새로운 요청(request)과 응답(response)를 전달하여 로그인 페이지로 포워딩하는 부분
+
 		} else {
 			chain.doFilter(request, response); // 다음 필터로 요청 전달
 //			chain.doFilter(request, response)는 필터 체인 내에서 현재 필터 이후의 필터로 제어를 전달하는 역할을 합니다.

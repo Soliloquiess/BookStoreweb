@@ -20,10 +20,16 @@
 	
 	<form action="submit_review" method="post" style="max-width: 800px; margin: 0 auto">
 			<div class="row">
-				<div class="col"><h2>Your Reviews</h2></div>
-				<div class="col">&nbsp;</div>
-				<div class="col"><h4>${loggedCustomer.fullname}</h4></div>
+			    <!-- 새로운 행(row)을 생성하는 div 요소 시작 -->
+			    <div class="col"><h2>Your Reviews</h2></div>
+			    <!-- 첫 번째 열(col)에 'Your Reviews'라는 제목을 포함한 h2 요소를 생성하는 div 요소 -->
+			    <div class="col">&nbsp;</div>
+			    <!-- 두 번째 열(col)에 공백을 표시하는 div 요소 -->
+			    <div class="col"><h4>${loggedCustomer.fullname}</h4></div>
+			    <!-- 세 번째 열(col)에 loggedCustomer의 fullname을 h4 요소로 출력하는 div 요소 -->
 			</div>
+			<!-- 행(row)을 닫는 div 요소 -->
+
 			<div class="row">
 				<div class="col"><hr/></div>
 			</div>
@@ -61,17 +67,25 @@
 	<jsp:directive.include file="footer.jsp" />
 </div>
 <script type="text/javascript">
+    // JavaScript 코드 시작
 
-	$(document).ready(function() {
-		
-		$("#rateYo").rateYo({
-			starWidth: "40px",
-			fullStar: true,
-			onSet: function (rating, rateYoInstance) {
-				$("#rating").val(rating);
-			}
-		});		
-	});
-</script>	
+    $(document).ready(function() {
+        // 문서가 준비되면 실행될 함수 시작
+
+        $("#rateYo").rateYo({
+            // rateYo 플러그인을 #rateYo 요소에 적용하는 함수 호출
+            starWidth: "40px", // 별의 너비를 40px로 설정
+            fullStar: true, // 별이 완전한 상태(full)로 표시되도록 설정
+            onSet: function (rating, rateYoInstance) {
+                // 사용자가 별을 설정할 때 실행될 콜백 함수 시작
+                $("#rating").val(rating); // rating 값을 #rating 요소의 값으로 설정
+            }
+            // 사용자가 별을 설정할 때 실행될 콜백 함수 끝
+        });
+        // rateYo 플러그인 적용 함수 끝
+    });
+    // 문서가 준비되면 실행될 함수 끝
+</script>
+
 </body>
 </html>
