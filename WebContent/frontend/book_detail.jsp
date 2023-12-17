@@ -98,12 +98,14 @@
 	        $("#buttonWriteReview").click(function() {
 	            // 2. 해당 도서의 리뷰를 작성하는 페이지로 이동합니다. book_id를 전달합니다.
 	            window.location = 'write_review?book_id=' + ${book.bookId};
+	            //매개변수 이름은 book_id
 	        });
 	        
 	        // 3. 'Add to Cart' 버튼을 클릭했을 때의 이벤트 핸들러 설정
 	        $("#buttonAddToCart").click(function() {
 	            // 4. 해당 도서를 장바구니에 추가하는 기능을 수행합니다. book_id를 전달합니다.
 	            window.location = 'add_to_cart?book_id=' + ${book.bookId};
+	            //매개변수 이름은 book_id
 	        });                
 	    });
 	</script>
