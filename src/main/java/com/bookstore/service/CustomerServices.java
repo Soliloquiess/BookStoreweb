@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import com.bookstore.dao.CustomerDAO;
 import com.bookstore.dao.HashGenerator;
+import com.bookstore.dao.OrderDAO;
 import com.bookstore.dao.ReviewDAO;
 import com.bookstore.entity.Customer;
 import static com.bookstore.service.CommonUtility.*;
@@ -281,7 +282,45 @@ public class CustomerServices {
 	    // DAO(Data Access Object)에서 customerId에 해당하는 'Customer' 객체를 가져옵니다.
 	    Customer customer = customerDAO.get(customerId);
 	    
+	    // 만약 가져온 고객(Customer)이 존재한다면, 삭제 가능 여부를 확인합니다.
+
+	 // 만약 가져온 고객(Customer)이 존재한다면, 삭제 가능 여부를 확인합니다.
 	    if (customer != null) {
+	        // ReviewDAO 인스턴스를 생성하여 해당 고객이 작성한 리뷰의 수를 가져옵니다.
+	        ReviewDAO reviewDAO = new ReviewDAO();
+	        long reviewCount = reviewDAO.countByCustomer(customerId);
+	        
+	        // 만약 해당 고객이 작성한 리뷰의 수가 0보다 크다면 삭제할 수 없는 상태입니다.
+	        // 리뷰가 있는 경우, 삭제할 수 없음을 나타내는 오류 메시지를 생성합니다.
+	        if (reviewCount > 0) {
+	            String message = "ID가 " + customerId + "인 고객은 책에 대한 리뷰를 작성하여 삭제할 수 없습니다.";
+	            showMessageBackend(message, request, response);
+	        } else {
+	            // OrderDAO 인스턴스를 생성하여 해당 고객과 관련된 주문의 수를 가져옵니다.
+	            OrderDAO orderDAO = new OrderDAO();
+	            long orderCount = orderDAO.countByCustomer(customerId);
+	            
+	            // 만약 해당 고객과 연관된 주문의 수가 0보다 크다면 삭제할 수 없는 상태입니다.
+	            if (orderCount > 0) {
+	                String message = "ID가 " + customerId + "인 고객은 주문을 하여 삭제할 수 없습니다.";
+	                showMessageBackend(message, request, response);
+	            } else {
+	                // 고객을 삭제하고, 삭제 성공 메시지와 함께 고객 목록을 업데이트합니다.
+	                customerDAO.delete(customerId);
+	                String message = "고객이 성공적으로 삭제되었습니다.";
+	                listCustomers(message);
+	            }
+	        }
+	    } else {
+	        // 만약 해당 customerId에 해당하는 고객이 없다면 혹은 이미 삭제된 경우 메시지를 표시합니다.
+	    	//// 'customer' 객체가 null인 경우, 해당 ID의 고객을 찾을 수 없거나 이미 삭제된 상태일 수 있음을 나타내는 오류 메시지를 생성합니다.
+	        String message = "ID가 " + customerId + "인 고객을 찾을 수 없거나, 다른 관리자에 의해 삭제되었습니다.";
+	        showMessageBackend(message, request, response);
+	        // 'showMessageBackend' 메서드를 호출하여 오류 메시지를 표시합니다.
+	    }
+	    
+	    //아래는 2023-12-20 이전 버전
+	    /*if (customer != null) {
 	        // ReviewDAO 객체를 생성합니다.
 	        ReviewDAO reviewDAO = new ReviewDAO();
 	        // 해당 고객이 작성한 리뷰의 수를 가져옵니다.
@@ -305,7 +344,7 @@ public class CustomerServices {
 	        String message = "ID가 " + customerId + "인 고객을 찾을 수 없거나 다른 관리자에 의해 이미 삭제되었을 수 있습니다.";
 	        // 'showMessageBackend' 메서드를 호출하여 오류 메시지를 표시합니다.
 	        showMessageBackend(message, request, response);
-	    }
+	    }*/
 		
 		
 		//아래는 이전 버전

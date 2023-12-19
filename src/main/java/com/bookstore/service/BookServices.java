@@ -16,6 +16,7 @@ import javax.servlet.http.Part;
 
 import com.bookstore.dao.BookDAO;
 import com.bookstore.dao.CategoryDAO;
+import com.bookstore.dao.OrderDAO;
 import com.bookstore.entity.Book;
 import com.bookstore.entity.Category;
 
@@ -262,16 +263,42 @@ public class BookServices {
 		        // 'showMessageBackend' 메서드를 호출하여 오류 메시지를 표시합니다.
 		        showMessageBackend(message, request, response);
 		    } else {
-		        // 책에 리뷰가 없는 경우
+		    	
+		    	
+		    	// 2023-12-20에 추가된 부분입니다.
+
+		    	// OrderDAO 인스턴스를 생성합니다.
+		    	OrderDAO orderDAO = new OrderDAO();
+
+		    	// 해당 책(bookId)과 연관된 주문 개수를 가져오는데 OrderDAO 클래스의 countOrderDetailByBook 메서드를 호출하여 수행합니다.
+		    	long countByOrder = orderDAO.countOrderDetailByBook(bookId);
+
+		    	// 연관된 주문 개수가 0보다 크면 해당 책(bookId)과 연관된 주문이 있으므로 삭제할 수 없는 상태입니다.
+		    	if (countByOrder > 0) {
+		    	    String message = "ID가 " + bookId + "인 책과 연관된 주문이 있어 삭제할 수 없습니다.";
+		    	    showMessageBackend(message, request, response);
+		    	} else {
+		    	    // 연관된 주문이 없는 경우 해당 책(bookId)을 성공적으로 삭제합니다.
+		    	    String message = "책이 성공적으로 삭제되었습니다.";
+		    	    bookDAO.delete(bookId); // bookDAO를 이용하여 bookId에 해당하는 책을 삭제합니다.
+		    	    listBooks(message); // 책 목록을 업데이트하여 메시지와 함께 표시합니다.
+		    	}
+//위의 코드는 2023년 12월 20일에 추가된 코드 부분으로, 특정 책(bookId)과 관련된 주문 개수를 확인하여 해당 책이 주문과 연관이 있는지 확인하고 삭제 가능 여부를 결정합니다. 만약 연관된 주문이 있다면 삭제할 수 없으며, 연관된 주문이 없는 경우 해당 책을 성공적으로 삭제하고 책 목록을 업데이트하여 메시지와 함께 표시합니다.
+		    	
+		    	
+		    	///////////////////////
+		        // 2023-12-20이전코드. 책에 리뷰가 없는 경우
 
 		        // 책을 삭제했다는 메시지를 생성합니다.
-		        String message = "책이 성공적으로 삭제되었습니다.";
+				/*
+				 * String message = "책이 성공적으로 삭제되었습니다.";
+				 * 
+				 * // 'bookId'에 해당하는 책을 DAO를 통해 삭제합니다. bookDAO.delete(bookId);
+				 * 
+				 * // 삭제 후 변경된 책 목록을 표시하기 위해 'listBooks' 메서드를 호출하여 메시지와 함께 책 목록을 표시합니다.
+				 * listBooks(message);
+				 */
 		        
-		        // 'bookId'에 해당하는 책을 DAO를 통해 삭제합니다.
-		        bookDAO.delete(bookId);            
-		        
-		        // 삭제 후 변경된 책 목록을 표시하기 위해 'listBooks' 메서드를 호출하여 메시지와 함께 책 목록을 표시합니다.
-		        listBooks(message);
 		    }
 		}
 		

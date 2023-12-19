@@ -30,6 +30,13 @@
 				<div class="row">
 					<div class="col"><b>Total Amount: </b></div>
 					<div class="col"><fmt:formatNumber value="${order.total}" type="currency" /></div>
+<%-- 	I'm using this tag:
+<fmt:formatNumber value="${order.total}" type="currency" />
+The currency symbol depends on the locale setting (language) of your browser.
+Try to use a fixed symbol like this:
+
+<fmt:formatNumber type="currency" currencySymbol="$" value="${order.total}" /> --%>
+		
 				</div>			
 			</div>
 		</div>
