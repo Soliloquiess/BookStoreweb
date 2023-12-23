@@ -12,18 +12,18 @@
 	
 	<div class="row">&nbsp;</div>
 	
-	<c:if test="${message != null}">
-		<div class="row">
-			<div class="col text-center"><h4>${message}</h4></div>
-		</div>		
+	<c:if test="${message != null}"> <!-- 메시지가 null이 아닌 경우 -->
+	    <div class="row">
+	        <div class="col text-center"><h4>${message}</h4></div> <!-- 메시지 출력 -->
+	    </div>		
 	</c:if>
-
-	<c:set var="cart" value="${sessionScope['cart']}" />
-
-	<c:if test="${cart.totalItems == 0}">
-		<div class="row">
-			<div class="col text-center"><h4>There's no items in your cart</h4></div>
-		</div>		
+	
+	<c:set var="cart" value="${sessionScope['cart']}" /> <!-- 세션에서 'cart' 변수 설정 -->
+	
+	<c:if test="${cart.totalItems == 0}"> <!-- 카트에 담긴 총 아이템 수가 0인 경우 -->
+	    <div class="row">
+	        <div class="col text-center"><h4>장바구니에 아이템이 없습니다.</h4></div> <!-- 장바구니에 아이템이 없다는 메시지 출력 -->
+	    </div>		
 	</c:if>
 
 	<c:if test="${cart.totalItems > 0}">			
@@ -133,12 +133,21 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col text-center">								
-								<button type="submit" class="btn btn-primary">Place Order</button>							
-								&nbsp;&nbsp;	
-								<a href="${pageContext.request.contextPath}/">Continue Shopping</a>								
-							</div>
-						</div>					
+				    <div class="col text-center">
+				        <!-- 주문하기 버튼 -->
+				        <button type="submit" class="btn btn-primary">주문하기</button> <!-- 사용자가 주문을 완료하도록 하는 버튼 -->
+				
+				        &nbsp;&nbsp; <!-- 공백 추가 -->
+				
+				        <!-- 쇼핑 계속하기 링크 -->
+				        <a href="${pageContext.request.contextPath}/">쇼핑 계속하기</a> <!-- 사용자가 쇼핑을 계속할 수 있는 링크 -->
+				  
+<%-- 				  ${pageContext.request.contextPath}는 JSP 페이지에서 사용되는 내장 객체인 pageContext를 통해 현재 웹 애플리케이션의 루트 경로를 나타냅니다.
+/는 루트 경로에 대한 절대 경로를 나타냅니다.
+즉, 이 링크는 사용자가 클릭하면 현재 웹 애플리케이션의 루트 경로로 이동하여 쇼핑을 계속할 수 있는 기능을 제공합니다. 보통 이러한 링크는 웹 애플리케이션에서 메인 페이지나 쇼핑 홈페이지로 연결되는 역할을 합니다. 사용자가 이 링크를 클릭하면 홈페이지나 쇼핑 페이지 등으로 이동할 수 있습니다. --%>
+				    </div>
+				</div>
+							
 					</form>						
 				</div>
 				

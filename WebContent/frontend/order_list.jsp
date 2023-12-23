@@ -17,11 +17,21 @@
 	</div>			
 	
 	<c:if test="${fn:length(listOrders) == 0}">
-		<div class="row">
-			<div class="col text-center"><h3>You have not placed any orders.</h3></div>
-		</div>	
+	    <!-- 'fn:length(listOrders) == 0' 조건을 확인합니다. -->
+	    <!-- 'listOrders' 변수의 길이가 0인 경우 아래의 내용을 실행합니다. -->
+	    
+	    <div class="row">
+	        <!-- 새로운 행(row)을 생성합니다. -->
+	        
+	        <div class="col text-center">
+	            <!-- 한 개의 열(column)을 생성하고 텍스트를 가운데 정렬합니다. -->
+	            
+	            <h3>You have not placed any orders.</h3>
+	            <!-- 주문을 한 번도 하지 않았음을 알리는 메시지를 출력합니다. -->
+	        </div>
+	    </div>
 	</c:if>
-	
+		
 	<c:if test="${fn:length(listOrders) > 0}">
 	<div align="center">
 		<table class="table table-bordered table-striped table-hover table-responsive-sm">
