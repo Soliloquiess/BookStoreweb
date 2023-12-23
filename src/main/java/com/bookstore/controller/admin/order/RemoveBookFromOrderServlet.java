@@ -47,9 +47,16 @@ public class RemoveBookFromOrderServlet extends HttpServlet {
         }
         
         // 주문 수정 페이지로 포워딩
+
+        // 수정된 주문 양식 페이지의 경로를 문자열 변수에 저장합니다.
         String editOrderFormPage = "order_form.jsp";
+
+        // 현재 요청(request)과 응답(response)을 사용하여 RequestDispatcher를 얻습니다.
         RequestDispatcher dispatcher = request.getRequestDispatcher(editOrderFormPage);
+
+        // 얻은 RequestDispatcher를 통해 현재 요청(request)과 응답(response)을 해당 페이지로 전달(forward)합니다.
         dispatcher.forward(request, response);
+
         
 // 해당 Java Servlet 코드는 /admin/remove_book_from_order URL에 매핑되는 서블릿을 정의합니다. HTTP GET 요청이 발생하면 doGet 메서드가 호출되며, 요청에서 bookId 매개변수 값을 가져와서 BookOrder 객체를 세션에서 가져옵니다. 주문에 속한 주문 상세 정보들을 반복하면서 해당 bookId에 해당하는 도서를 찾아 제거하고, 그에 따라 총액을 조정합니다. 마지막으로 주문 수정 페이지로 포워딩합니다.
     }

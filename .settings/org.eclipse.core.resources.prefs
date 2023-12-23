@@ -1,4 +1,6 @@
 eclipse.preferences.version=1
+encoding//WebContent/admin/add_book_form.jsp=UTF-8
+encoding//WebContent/admin/add_book_result.jsp=UTF-8
 encoding//WebContent/admin/book_form.jsp=UTF-8
 encoding//WebContent/admin/book_list.jsp=UTF-8
 encoding//WebContent/admin/category_list.jsp=UTF-8

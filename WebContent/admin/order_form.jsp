@@ -96,9 +96,21 @@
 				<td><b>Country: </b></td>
 				<td>
 					<select name="country" required>
+					  <!-- 'country'라는 이름의 셀렉트 박스(드롭다운 목록)를 생성합니다. -->
+            <!-- 'required' 속성으로 필수 선택 필드로 설정합니다. -->
 					<c:forEach items="${mapCountries}" var="country">
-						<option value="${country.value}" <c:if test='${order.country eq country.value}'>selected='selected'</c:if> >${country.key}</option>
-					</c:forEach>
+		                <!-- 'mapCountries'에 대한 반복문을 시작합니다. -->
+		                <!-- 각 'country'를 순회하며 아래의 옵션을 생성합니다. -->
+		                
+		                <option value="${country.value}" 
+		                        <c:if test='${order.country eq country.value}'>selected='selected'</c:if>>
+		                    <!-- 옵션을 생성하고, 'value' 속성은 실제 값으로, 'country.value' 값을 사용합니다. -->
+		                    <!-- 주문의 국가가 해당 옵션의 국가와 동일한 경우, 해당 옵션을 선택 상태로 표시합니다. -->
+		                    
+		                    ${country.key}
+		                    <!-- 옵션 텍스트로 국가 이름을 표시합니다. -->
+		                </option>
+		            </c:forEach>
 					</select>				
 				</td>
 			</tr>					
@@ -157,15 +169,23 @@
 	<jsp:directive.include file="footer.jsp" />
 	
 	<script>
-		function showAddBookPopup() {
-			var width = 600;
-			var height = 250;
-			var left = (screen.width - width) / 2;
-			var top = (screen.height - height) / 2;
-			
-			window.open('add_book_form', '_blank', 
-					'width=' + width + ', height=' + height + ', top=' + top + ', left=' + left);
-		}
+	    // 새 책을 추가하는 팝업을 표시하는 함수 정의
+	    function showAddBookPopup() {
+	        // 팝업 창의 너비와 높이 설정
+	        var width = 600;
+	        var height = 250;
+	        
+	        // 팝업 창이 화면 가운데에 위치하도록 left와 top 위치 설정
+	        var left = (screen.width - width) / 2;
+	        var top = (screen.height - height) / 2;
+	        
+	        // window.open 메서드를 사용하여 새 창 열기
+	        window.open('add_book_form', '_blank', 
+	                    'width=' + width + ', height=' + height + ', top=' + top + ', left=' + left);
+	        // window.open()으로 새 창을 열고, 'add_book_form'을 로드하며, 새 창의 크기 및 위치를 설정합니다.
+	        // '_blank'는 새 창이 열리는 방식을 나타냅니다.
+	        // 위에서 설정한 너비, 높이, 위치 정보를 문자열로 조합하여 새 창의 속성으로 전달합니다.
+	    }
 	</script>
 </body>
 </html>

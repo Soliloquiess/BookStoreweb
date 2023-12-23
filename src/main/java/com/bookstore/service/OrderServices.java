@@ -69,30 +69,67 @@ public class OrderServices {
 //
 //	public void listAllOrder(String message) throws ServletException, IOException { ... }: 메시지와 함께 주문 목록을 나열하는 메서드입니다. OrderDAO를 사용하여 모든 주문 목록을 가져온 후, 요청 속성에 메시지와 주문 목록을 설정하고, 해당 페이지로 요청을 전달합니다	
 	
-
 	public void viewOrderDetailForAdmin() throws ServletException, IOException {
-	    // request.getParameter("id")를 통해 주문 ID를 가져와 정수형으로 변환합니다.
+	    // 요청에서 "id" 매개변수를 추출하여 orderId 변수에 저장합니다.
 	    int orderId = Integer.parseInt(request.getParameter("id"));
-
-	    // orderDao에서 해당 주문 ID에 해당하는 주문을 가져옵니다.
+	    
+	    // 주문 ID를 사용하여 해당 주문 정보를 orderDao에서 가져옵니다.
 	    BookOrder order = orderDao.get(orderId);
-
+	    
+	    // 만약 해당 주문 정보가 존재하는 경우
 	    if (order != null) {
-	        // 주문이 존재하는 경우 해당 주문 정보를 요청 속성에 설정하고 order_detail.jsp 페이지로 전달합니다.
+	        // 주문 정보를 "order"라는 이름으로 요청 속성에 설정합니다.
 	        request.setAttribute("order", order);
+	        
+	        // "order_detail.jsp" 페이지로 요청을 전달하여 해당 주문의 세부 정보를 표시합니다.
 	        forwardToPage("order_detail.jsp", request, response);
 	    } else {
-	        // 주문을 찾지 못한 경우 오류 메시지를 생성하고 백엔드 페이지에 메시지를 표시합니다.
+	        // 주문 정보가 존재하지 않는 경우, 해당 ID를 가진 주문을 찾을 수 없다는 메시지를 작성합니다.
 	        String message = "Could not find order with ID " + orderId;
+	        
+	        // showMessageBackend 메서드를 사용하여 메시지를 브라우저에 표시합니다.
 	        showMessageBackend(message, request, response);
 	    }
-	    request.setAttribute("order", order); // 주문 정보를 요청 속성에 다시 설정합니다.
-
-	    String detailPage = "order_detail.jsp"; // 주문 상세 페이지의 경로를 지정합니다.
-	    RequestDispatcher dispatcher = request.getRequestDispatcher(detailPage); // Dispatcher를 설정합니다.
-	    dispatcher.forward(request, response); // 요청과 응답을 해당 페이지로 전달합니다.
 	}
 
+	
+	//이 아래는 2023-12-23 전 코드 assignnment 21 참조. 이 코드 실행 시 제대로 동작 X
+//	public void viewOrderDetailForAdmin() throws ServletException, IOException {
+//	    // request.getParameter("id")를 통해 주문 ID를 가져와 정수형으로 변환합니다.
+//	    int orderId = Integer.parseInt(request.getParameter("id"));
+//
+//	    // orderDao에서 해당 주문 ID에 해당하는 주문을 가져옵니다.
+//	    BookOrder order = orderDao.get(orderId);
+//
+//	    if (order != null) {
+//	        // 주문이 존재하는 경우 해당 주문 정보를 요청 속성에 설정하고 order_detail.jsp 페이지로 전달합니다.
+//	        request.setAttribute("order", order);
+//	        forwardToPage("order_detail.jsp", request, response);
+//	    } else {
+//	        // 주문을 찾지 못한 경우 오류 메시지를 생성하고 백엔드 페이지에 메시지를 표시합니다.
+//	        String message = "Could not find order with ID " + orderId;
+//	        showMessageBackend(message, request, response);
+//	    }
+//	    request.setAttribute("order", order); // 주문 정보를 요청 속성에 다시 설정합니다.
+//
+//	    String detailPage = "order_detail.jsp"; // 주문 상세 페이지의 경로를 지정합니다.
+//	    RequestDispatcher dispatcher = request.getRequestDispatcher(detailPage); // Dispatcher를 설정합니다.
+//	    dispatcher.forward(request, response); // 요청과 응답을 해당 페이지로 전달합니다.
+//	}
+	
+	//아래는 기본적인 OrderDetailFormAdmini 폼
+//	public void viewOrderDetailForAdmin() throws ServletException, IOException {
+//		int orderId = Integer.parseInt(request.getParameter("id"));
+//		
+//		BookOrder order = orderDao.get(orderId);
+//		request.setAttribute("order", order);
+//		
+//		String detailPage = "order_detail.jsp";
+//		RequestDispatcher dispatcher = request.getRequestDispatcher(detailPage);
+//		dispatcher.forward(request, response);		
+//	}
+
+	
 	public void showCheckoutForm() throws ServletException, IOException {
 	    HttpSession session = request.getSession();
 	    ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("cart"); // 세션에서 장바구니 정보를 가져옵니다.
@@ -350,30 +387,70 @@ public class OrderServices {
 //		OrderDAO를 사용하여 해당 주문 ID와 고객 ID에 해당하는 주문 정보를 가져옵니다.
 //		요청 속성에 주문 정보를 설정하고, 주문 상세 페이지로 요청과 응답을 전달하여 해당 주문의 상세 정보를 표시합니다.
 
+
+	//2023-12-23 전 코드 assignment24 추가 코드
 	public void showEditOrderForm() throws ServletException, IOException {
-	    // URL 매개변수에서 주문 ID를 가져와 정수형으로 변환합니다.
-	    Integer orderId = Integer.parseInt(request.getParameter("id"));
+	    // HTTP 요청에서 "id" 매개변수를 추출하여 orderId 변수에 저장합니다.
+	    Integer orderId = Integer.parseInt(request.getParameter("id"));		
 	    
-	    // 세션에서 "NewBookPendingToAddToOrder" 속성을 가져옵니다.
+	    // 주문 ID를 사용하여 해당 주문을 orderDao에서 가져옵니다.
+	    BookOrder order = orderDao.get(orderId);
+	    
+	    // 주문이 존재하지 않는 경우
+	    if (order == null) {
+	        // 해당 ID를 가진 주문을 찾을 수 없음을 알리는 메시지를 작성합니다.
+	        String message = "Could not find order with ID " + orderId;
+	        
+	        // showMessageBackend 메서드를 사용하여 메시지를 브라우저에 표시하고, 서블릿 처리를 중단합니다.
+	        showMessageBackend(message, request, response);
+	        return; // 메서드 실행을 종료하고 반환합니다.
+	    }
+	    
+	    // 현재 요청의 세션 객체를 가져옵니다.
 	    HttpSession session = request.getSession();
+	    
+	    // 세션에서 "NewBookPendingToAddToOrder" 속성의 값을 가져옵니다.
 	    Object isPendingBook = session.getAttribute("NewBookPendingToAddToOrder");
 	    
-	    if (isPendingBook == null) {
-	        // "NewBookPendingToAddToOrder" 속성이 없는 경우 OrderDAO를 사용하여 해당 주문 ID의 주문 정보를 가져와 세션에 저장합니다.
-	        BookOrder order = orderDao.get(orderId);
-	        session.setAttribute("order", order); // 주문 정보를 세션에 저장합니다.
+	    // "NewBookPendingToAddToOrder" 속성이 없는 경우
+	    if (isPendingBook == null) {			
+	        // 세션에 "order" 속성으로 현재의 주문 정보를 저장합니다.
+	        session.setAttribute("order", order);
 	    } else {
-	        // "NewBookPendingToAddToOrder" 속성이 있는 경우 해당 속성을 세션에서 제거합니다.
+	        // "NewBookPendingToAddToOrder" 속성이 있는 경우, 해당 속성을 세션에서 제거합니다.
 	        session.removeAttribute("NewBookPendingToAddToOrder");
 	    }
 	    
-	    // 국가 목록을 생성하여 요청 속성에 추가합니다.
-	    CommonUtility.generateCountryList(request);
-	    
-	    String editPage = "order_form.jsp"; // 주문 편집 페이지의 경로를 지정합니다.
-	    RequestDispatcher dispatcher = request.getRequestDispatcher(editPage); // Dispatcher를 설정합니다.
-	    dispatcher.forward(request, response); // 요청과 응답을 해당 페이지로 전달합니다.
+	    // "order_form.jsp" 페이지로 요청을 전달합니다.
+	    forwardToPage("order_form.jsp", request, response);
 	}
+
+	
+	//2023-12-23 전 코드
+//	public void showEditOrderForm() throws ServletException, IOException {
+//	    // URL 매개변수에서 주문 ID를 가져와 정수형으로 변환합니다.
+//	    Integer orderId = Integer.parseInt(request.getParameter("id"));
+//	    
+//	    // 세션에서 "NewBookPendingToAddToOrder" 속성을 가져옵니다.
+//	    HttpSession session = request.getSession();
+//	    Object isPendingBook = session.getAttribute("NewBookPendingToAddToOrder");
+//	    
+//	    if (isPendingBook == null) {
+//	        // "NewBookPendingToAddToOrder" 속성이 없는 경우 OrderDAO를 사용하여 해당 주문 ID의 주문 정보를 가져와 세션에 저장합니다.
+//	        BookOrder order = orderDao.get(orderId);
+//	        session.setAttribute("order", order); // 주문 정보를 세션에 저장합니다.
+//	    } else {
+//	        // "NewBookPendingToAddToOrder" 속성이 있는 경우 해당 속성을 세션에서 제거합니다.
+//	        session.removeAttribute("NewBookPendingToAddToOrder");
+//	    }
+//	    
+//	    // 국가 목록을 생성하여 요청 속성에 추가합니다.
+//	    CommonUtility.generateCountryList(request);
+//	    
+//	    String editPage = "order_form.jsp"; // 주문 편집 페이지의 경로를 지정합니다.
+//	    RequestDispatcher dispatcher = request.getRequestDispatcher(editPage); // Dispatcher를 설정합니다.
+//	    dispatcher.forward(request, response); // 요청과 응답을 해당 페이지로 전달합니다.
+//	}
 
 //	public void showEditOrderForm() throws ServletException, IOException { ... }:
 //		URL 매개변수에서 주문 ID를 가져와 정수형으로 변환합니다.

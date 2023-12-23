@@ -63,6 +63,6 @@ public class AddBookToOrderServlet extends HttpServlet {
 	    RequestDispatcher dispatcher = request.getRequestDispatcher(resultPage);
 	    dispatcher.forward(request, response);
 	    
-// 이 Java Servlet 코드는 HTTP POST 요청을 처리합니다. 요청에서 bookId와 quantity 매개변수 값을 가져와서 Book 객체를 생성하고, 현재 세션에서 주문 정보를 가져옵니다. 그 후, 주문에 대한 새로운 상세 정보를 만들고 주문의 총액을 업데이트한 후에 새로운 상세 정보를 주문에 추가합니다. 마지막으로, 결과 페이지를 설정하고 해당 페이지로 요청을 포워딩합니다.	    
+	    // 이 Java Servlet 코드는 HTTP POST 요청을 처리합니다. 요청에서 bookId와 quantity 매개변수 값을 가져와서 Book 객체를 생성하고, 현재 세션에서 주문 정보를 가져옵니다. 그 후, 주문에 대한 새로운 상세 정보를 만들고 주문의 총액을 업데이트한 후에 새로운 상세 정보를 주문에 추가합니다. 마지막으로, 결과 페이지를 설정하고 해당 페이지로 요청을 포워딩합니다.	    
 	}
 }

@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -37,12 +37,19 @@
 			</tr>
 			<tr><td>&nbsp;</td></tr>
 			<tr>
-				<td colspan="2" align="center">
-					<input type="submit" value="Add" />
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="button" value="Cancel" onclick="javascript: self.close();" />
-				</td>
+			    <!-- 테이블의 셀들을 병합하여 하나의 셀로 만듭니다. -->
+			    <td colspan="2" align="center">
+			        <!-- 셀 안의 내용을 가운데 정렬합니다. -->
+			        
+			        <!-- "Add" 라벨을 가진 서브밋(input type="submit") 버튼을 생성합니다. -->
+			        <input type="submit" value="Add" />
+			        
+			        <!-- 공백을 나타내는 HTML 엔터티(&nbsp;)를 사용하여 간격을 추가합니다. -->
+			        <!-- "Cancel" 라벨을 가진 버튼을 생성하고, 클릭 시 자바스크립트로 현재 창을 닫도록 설정합니다. -->
+			        <input type="button" value="Cancel" onclick="javascript: self.close();" />
+			    </td>
 			</tr>
+
 		</table>
 		</form>
 		
