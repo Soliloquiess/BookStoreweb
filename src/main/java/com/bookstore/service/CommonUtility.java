@@ -22,6 +22,7 @@ public class CommonUtility {
 	    // 모든 국가 코드에 대해 국가 이름과 코드를 가져와 맵에 추가합니다.
 	    for (String countryCode : countryCodes) {
 	        // 해당 국가 코드로부터 Locale을 생성합니다.
+	    	System.out.println("countrycode1231232131"+ countryCode);
 	        Locale locale = new Locale("", countryCode);
 	        
 	        // Locale 객체를 이용하여 국가 코드와 이름을 가져옵니다.

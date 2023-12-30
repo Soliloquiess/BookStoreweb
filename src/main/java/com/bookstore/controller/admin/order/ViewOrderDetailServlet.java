@@ -26,4 +26,3 @@ public class ViewOrderDetailServlet extends HttpServlet {
     }
 //이 서블릿 코드는 /admin/view_order URL에 매핑되는 서블릿을 정의합니다. HTTP GET 요청이 발생하면 doGet 메서드가 호출되며, OrderServices 클래스의 인스턴스를 생성한 후 해당 클래스 내의 viewOrderDetailForAdmin 메서드를 호출하여 관리자용으로 주문 세부 정보를 보여줍니다.
 }
-

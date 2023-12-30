@@ -191,47 +191,53 @@ public class CustomerServices {
 	 * @throws ServletException Servlet 예외
 	 * @throws IOException IO 예외
 	 */
+	
 	public void editCustomer() throws ServletException, IOException {
-	    // 요청으로부터 고객 ID를 가져와서 해당 ID에 해당하는 고객 정보를 가져옴
-//	    Integer customerId = Integer.parseInt(request.getParameter("id"));
-//	    Customer customer = customerDAO.get(customerId);
-
-	    
-	    
-	 // 요청에서 'id' 매개변수를 가져와서 정수로 변환합니다.
-	    Integer customerId = Integer.parseInt(request.getParameter("id"));
-
-	    // 'customerId'에 해당하는 고객 정보를 데이터베이스에서 가져옵니다.
-	    Customer customer = customerDAO.get(customerId);
-	    
-	    // 만약 고객이 존재하지 않는 경우:
-	    if (customer == null) {
-	        // 메시지를 생성합니다.
-	        String message = "Could not find customer with ID " + customerId;
-	        // showMessageBackend() 메서드를 호출하여 해당 메시지를 백엔드에서 보여줍니다.
-	        showMessageBackend(message, request, response);
-	    } 
-	    // 그렇지 않은 경우 (고객이 존재하는 경우):
-	    else {
-	        // 요청 속성에 'customer'라는 이름으로 고객 정보를 설정합니다.
-	        request.setAttribute("customer", customer);	
-	        // forwardToPage() 메서드를 사용하여 'customer_form.jsp' 페이지로 포워딩합니다.
-	        forwardToPage("customer_form.jsp", request, response);	
-	    }
-
-	    
-	    
-	    
-	    
-	    // 요청 속성에 해당 고객 정보와 국가 목록을 설정
-	    request.setAttribute("customer", customer);
-	    CommonUtility.generateCountryList(request);
-
-	    // 고객 정보를 수정하는 JSP 페이지로 포워딩
-	    String editPage = "customer_form.jsp";
-	    RequestDispatcher requestDispatcher = request.getRequestDispatcher(editPage);
-	    requestDispatcher.forward(request, response);
+		Integer customerId = Integer.parseInt(request.getParameter("id"));
+		Customer customer = customerDAO.get(customerId);
+		
+		request.setAttribute("customer", customer);
+		
+		CommonUtility.generateCountryList(request);
+		
+		String editPage = "customer_form.jsp";
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher(editPage);
+		requestDispatcher.forward(request, response);		
 	}
+	
+	/*
+	 * public void editCustomer() throws ServletException, IOException { // 요청으로부터
+	 * 고객 ID를 가져와서 해당 ID에 해당하는 고객 정보를 가져옴 // Integer customerId =
+	 * Integer.parseInt(request.getParameter("id")); // Customer customer =
+	 * customerDAO.get(customerId);
+	 * 
+	 * 
+	 * 
+	 * // 요청에서 'id' 매개변수를 가져와서 정수로 변환합니다. Integer customerId =
+	 * Integer.parseInt(request.getParameter("id"));
+	 * 
+	 * // 'customerId'에 해당하는 고객 정보를 데이터베이스에서 가져옵니다. Customer customer =
+	 * customerDAO.get(customerId);
+	 * 
+	 * // 만약 고객이 존재하지 않는 경우: if (customer == null) { // 메시지를 생성합니다. String message =
+	 * "Could not find customer with ID " + customerId; // showMessageBackend() 메서드를
+	 * 호출하여 해당 메시지를 백엔드에서 보여줍니다. showMessageBackend(message, request, response); }
+	 * // 그렇지 않은 경우 (고객이 존재하는 경우): else { // 요청 속성에 'customer'라는 이름으로 고객 정보를 설정합니다.
+	 * request.setAttribute("customer", customer); // forwardToPage() 메서드를 사용하여
+	 * 'customer_form.jsp' 페이지로 포워딩합니다. forwardToPage("customer_form.jsp", request,
+	 * response); }
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * // 요청 속성에 해당 고객 정보와 국가 목록을 설정 request.setAttribute("customer", customer);
+	 * CommonUtility.generateCountryList(request);
+	 * 
+	 * // 고객 정보를 수정하는 JSP 페이지로 포워딩 String editPage = "customer_form.jsp";
+	 * RequestDispatcher requestDispatcher = request.getRequestDispatcher(editPage);
+	 * requestDispatcher.forward(request, response); }
+	 */
 
 
 	/**

@@ -34,4 +34,3 @@ public class ShowAddBookFormServlet extends HttpServlet {
     
     //이 서블릿 코드는 /admin/add_book_form URL에 매핑되는 서블릿을 정의합니다. HTTP GET 요청이 발생하면 doGet 메서드가 호출되며, BookDAO 객체를 사용하여 모든 책 목록을 가져옵니다. 그 후, 요청 속성에 책 목록을 설정하고 add_book_form.jsp 페이지로 포워딩하여 추가 폼 페이지를 표시합니다.
 }
-
